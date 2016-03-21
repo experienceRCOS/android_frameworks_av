@@ -3284,7 +3284,13 @@ static OMX_U32 setPFramesSpacing(int32_t iFramesInterval, int32_t frameRate) {
     return ret;
 }
 
-static OMX_VIDEO_CONTROLRATETYPE getBitrateMode(const sp<AMessage> &msg) {
+static OMX_VIDEO_CONTROLRATETYPE getBitrateMode(const sp<AMessage> &msg, const AString &name) {
+#ifdef HAWAII_HWC
+    // vc4 encoder only supports VBR
+    if (strncmp(name.c_str(), "OMX.BRCM.vc4.encoder.", 21) == 0) {
+        return OMX_Video_ControlRateVariable;
+    }
+#endif
     int32_t tmp;
     if (!msg->findInt32("bitrate-mode", &tmp)) {
         return OMX_Video_ControlRateVariable;
