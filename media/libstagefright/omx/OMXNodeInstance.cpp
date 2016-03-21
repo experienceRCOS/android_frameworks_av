@@ -885,10 +885,17 @@ status_t OMXNodeInstance::createGraphicBufferSource(
     }
 
     if (def.format.video.eColorFormat != OMX_COLOR_FormatAndroidOpaque) {
+#ifdef HAWAII_HWC
+        // VC Encoder change OMX_COLOR_FormatAndroidOpaque to 0x7F000005
+        if (def.format.video.eColorFormat != 0x7F000005) {
+#endif
         CLOGW("createInputSurface requires COLOR_FormatSurface "
                 "(AndroidOpaque) color format instead of %s(%#x)",
                 asString(def.format.video.eColorFormat), def.format.video.eColorFormat);
         return INVALID_OPERATION;
+#ifdef HAWAII_HWC
+        }
+#endif
     }
 
     uint32_t usageBits;
