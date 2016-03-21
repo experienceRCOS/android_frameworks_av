@@ -3306,7 +3306,7 @@ status_t ACodec::setupMPEG4EncoderParameters(const sp<AMessage> &msg) {
         return INVALID_OPERATION;
     }
 
-    OMX_VIDEO_CONTROLRATETYPE bitrateMode = getBitrateMode(msg);
+    OMX_VIDEO_CONTROLRATETYPE bitrateMode = getBitrateMode(msg, mComponentName);
 
     float frameRate;
     if (!msg->findFloat("frame-rate", &frameRate)) {
